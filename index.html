@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia sobre Google Hacking</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="ebook">
+
+  <div class="cover">
+    <div class="cover-badge">MINI EBOOK — EDIÇÃO SEGURANÇA OFENSIVA</div>
+    <h1><span>Google</span> HACKING<br>&amp; <span>Shodan</span>.io</h1>
+    <p class="cover-sub">OSINT · RECONHECIMENTO · DORKS · FILTROS</p>
+    <div class="cover-scan">
+      <div class="cover-pill">GOOGLE DORKS</div>
+      <div class="cover-pill">OPERADORES AVANÇADOS</div>
+      <div class="cover-pill">SHODAN FILTERS</div>
+      <div class="cover-pill">EXEMPLOS REAIS</div>
+    </div>
+    <div class="cover-line"></div>
+  </div>
+
+  <div class="nav" id="nav">
+    <button class="nav-btn active" onclick="showTab(0)">00 · INTRO</button>
+    <button class="nav-btn" onclick="showTab(1)">01 · OPERADORES BASE</button>
+    <button class="nav-btn" onclick="showTab(2)">02 · DORKS AVANÇADOS</button>
+    <button class="nav-btn" onclick="showTab(3)">03 · CASOS REAIS</button>
+    <button class="nav-btn" onclick="showTab(4)">⭐ BÔNUS · SHODAN</button>
+  </div>
+
+  <!-- TAB 0: INTRO -->
+  <div class="content active" id="tab0">
+    <div class="section-title">O que é Google Hacking?</div>
+    <p class="section-lead">
+      Google Hacking — também conhecido como Google Dorking — é a prática de usar os operadores de busca avançada do Google para encontrar informações sensíveis ou expostas involuntariamente na internet. Não é necessário qualquer ataque ativo: toda a inteligência vem de dados que o próprio Google indexou.
+    </p>
+
+    <div class="concept">
+      <div class="concept-title">O que são Google Dorks? <span class="tag">DEFINIÇÃO</span></div>
+      <p>São consultas de busca especialmente formatadas que exploram os operadores avançados do Google para localizar arquivos, diretórios, dispositivos, credenciais e outras informações que normalmente não são visíveis em buscas comuns. O Google se torna uma poderosa ferramenta de OSINT (Open Source Intelligence).</p>
+    </div>
+
+    <div class="concept">
+      <div class="concept-title">Por que isso é poderoso? <span class="tag">CONCEITO</span></div>
+      <p>Administradores mal configurados expõem acidentalmente arquivos, painéis de admin, cameras, logs e até senhas. O Google indexa tudo. Com a dork certa, você encontra esses vazamentos sem tocar no servidor.</p>
+    </div>
+
+    <div class="warn">
+      <span class="warn-icon">⚠</span>
+      <span>AVISO LEGAL: Este material é exclusivamente educacional. O uso de Google Dorks para acessar sistemas sem autorização é crime (Lei 12.737/2012 no Brasil). Use apenas em sistemas que você tem permissão explícita para testar.</span>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">ORIGENS</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-title">GHDB — Google Hacking Database <span class="tag">REFERÊNCIA</span></div>
+      <p>Criada por Johnny Long em 2004, a Google Hacking Database (exploit-db.com/google-hacking-database) é um repositório público com milhares de dorks categorizadas, incluindo: arquivos sensíveis, senhas expostas, painéis de login, câmeras online, dispositivos IoT e muito mais.</p>
+    </div>
+
+    <div class="tip">
+      &gt;_ DICA: Combine múltiplos operadores em uma única busca para resultados muito mais precisos e filtrados. A arte do Google Hacking está na combinação estratégica.
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">FLUXO DE RECONHECIMENTO PASSIVO</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">OSINT WORKFLOW</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">/* Etapa 1 — Definir alvo */</span></span>
+        <span class="code-line"><span class="k">TARGET</span> = <span class="s">"empresa-alvo.com.br"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">/* Etapa 2 — Reconhecimento com Dorks */</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">empresa-alvo.com.br</span> <span class="k">filetype:</span><span class="s">pdf</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">empresa-alvo.com.br</span> <span class="k">inurl:</span><span class="s">admin</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">/* Etapa 3 — Explorar com Shodan */</span></span>
+        <span class="code-line"><span class="k">hostname:</span><span class="v">empresa-alvo.com.br</span></span>
+        <span class="code-line"><span class="k">org:</span><span class="s">"Empresa Alvo"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">/* Resultado: mapa completo sem tocar no alvo */</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 1: OPERADORES BASE -->
+  <div class="content" id="tab1">
+    <div class="section-title">Operadores Fundamentais</div>
+    <p class="section-lead">
+      Estes são os blocos de construção do Google Hacking. Cada operador funciona como um filtro que restringe ou expande os resultados de busca. Dominá-los é o primeiro passo.
+    </p>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">OPERADORES DE CONTEÚDO</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="op-card">
+        <div class="op-name">site:</div>
+        <div class="op-desc">Restringe resultados a um domínio específico. Funciona com domínio completo ou TLD.</div>
+        <div class="op-ex">site:gov.br confidencial</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">inurl:</div>
+        <div class="op-desc">Busca pela palavra-chave dentro da URL da página. Ótimo para encontrar painéis.</div>
+        <div class="op-ex">inurl:admin/login.php</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">intext:</div>
+        <div class="op-desc">Procura o termo dentro do conteúdo visível da página.</div>
+        <div class="op-ex">intext:"password" site:pastebin.com</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">intitle:</div>
+        <div class="op-desc">Localiza páginas com a palavra-chave no título (&lt;title&gt;) da página.</div>
+        <div class="op-ex">intitle:"index of" /backup</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">filetype:</div>
+        <div class="op-desc">Filtra por extensão de arquivo. Aceita: pdf, doc, xls, sql, log, txt, xml, env…</div>
+        <div class="op-ex">filetype:sql "INSERT INTO users"</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">ext:</div>
+        <div class="op-desc">Alternativa ao filetype:, busca por extensão de arquivo específica.</div>
+        <div class="op-ex">ext:env "DB_PASSWORD"</div>
+      </div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">OPERADORES DE LINK E CACHE</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="op-card">
+        <div class="op-name">cache:</div>
+        <div class="op-desc">Exibe a versão em cache de uma página. Útil quando a original foi removida.</div>
+        <div class="op-ex">cache:site-alvo.com/admin</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">link:</div>
+        <div class="op-desc">Encontra páginas que apontam para uma URL. Mapeamento de relacionamentos.</div>
+        <div class="op-ex">link:empresa-alvo.com</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">related:</div>
+        <div class="op-desc">Retorna sites similares ou relacionados ao domínio informado.</div>
+        <div class="op-ex">related:empresa-alvo.com</div>
+      </div>
+      <div class="op-card">
+        <div class="op-name">info:</div>
+        <div class="op-desc">Exibe informações que o Google tem sobre uma URL específica.</div>
+        <div class="op-ex">info:empresa-alvo.com</div>
+      </div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">OPERADORES LÓGICOS E ESPECIAIS</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <table class="dork-table">
+      <tr>
+        <th>OPERADOR</th>
+        <th>FUNÇÃO</th>
+        <th>EXEMPLO</th>
+      </tr>
+      <tr>
+        <td class="op">"aspas"</td>
+        <td class="desc">Busca exata da frase entre aspas</td>
+        <td class="ex">"index of" /uploads</td>
+      </tr>
+      <tr>
+        <td class="op">-palavra</td>
+        <td class="desc">Exclui resultados com esse termo</td>
+        <td class="ex">login -site:github.com</td>
+      </tr>
+      <tr>
+        <td class="op">OR / |</td>
+        <td class="desc">Retorna A ou B (booleano)</td>
+        <td class="ex">filetype:xls OR filetype:csv</td>
+      </tr>
+      <tr>
+        <td class="op">AND</td>
+        <td class="desc">Ambos os termos obrigatórios (implícito)</td>
+        <td class="ex">admin AND password</td>
+      </tr>
+      <tr>
+        <td class="op">*</td>
+        <td class="desc">Coringa — qualquer palavra no lugar</td>
+        <td class="ex">"usuário * senha *"</td>
+      </tr>
+      <tr>
+        <td class="op">allinurl:</td>
+        <td class="desc">Todos os termos devem estar na URL</td>
+        <td class="ex">allinurl:admin php login</td>
+      </tr>
+      <tr>
+        <td class="op">allintitle:</td>
+        <td class="desc">Todos os termos no título da página</td>
+        <td class="ex">allintitle:index backup 2024</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      &gt;_ COMBINAÇÃO PODEROSA: <span style="color:var(--green)">site: + filetype: + intext:</span> — restringe o domínio, o tipo de arquivo E o conteúdo. Resultado extremamente preciso.
+    </div>
+  </div>
+
+  <!-- TAB 2: DORKS AVANÇADOS -->
+  <div class="content" id="tab2">
+    <div class="section-title">Dorks Avançados por Categoria</div>
+    <p class="section-lead">
+      Dorks reais organizadas por finalidade. Cada uma é uma consulta pronta para ser adaptada com o domínio do alvo. São usadas por pentesters durante a fase de reconhecimento passivo.
+    </p>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">🗂 ARQUIVOS E DIRETÓRIOS EXPOSTOS</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">DIRECTORY LISTING</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Listagem de diretórios abertos (sem proteção)</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"index of"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Pastas de backup expostas</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"index of"</span> <span class="s">"backup"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Arquivos de configuração acessíveis</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"index of"</span> <span class="s">".env"</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"index of"</span> <span class="s">"wp-config.php"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Uploads sem proteção</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"index of"</span> <span class="k">inurl:</span><span class="s">uploads</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+      </div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">🔑 CREDENCIAIS E DADOS SENSÍVEIS</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">CREDENTIALS EXPOSURE</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Arquivos .env com variáveis de ambiente</span></span>
+        <span class="code-line"><span class="k">ext:</span><span class="s">env</span> <span class="k">intext:</span><span class="s">"DB_PASSWORD"</span></span>
+        <span class="code-line"><span class="k">ext:</span><span class="s">env</span> <span class="k">intext:</span><span class="s">"APP_KEY"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Dumps SQL com credenciais</span></span>
+        <span class="code-line"><span class="k">filetype:</span><span class="s">sql</span> <span class="k">intext:</span><span class="s">"INSERT INTO"</span> <span class="s">"users"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Arquivos de configuração PHP</span></span>
+        <span class="code-line"><span class="k">filetype:</span><span class="s">php</span> <span class="k">intext:</span><span class="s">"$db_password"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Planilhas com dados pessoais</span></span>
+        <span class="code-line"><span class="k">filetype:</span><span class="s">xls</span> <span class="k">intext:</span><span class="s">"cpf"</span> <span class="k">site:</span><span class="v">alvo.com.br</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Logs com senhas em texto claro</span></span>
+        <span class="code-line"><span class="k">filetype:</span><span class="s">log</span> <span class="k">intext:</span><span class="s">"password"</span></span>
+      </div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">🖥 PAINÉIS DE ADMINISTRAÇÃO</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">ADMIN PANELS</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Painéis WordPress</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com</span> <span class="k">inurl:</span><span class="s">wp-admin</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Qualquer painel de admin</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com</span> <span class="k">inurl:</span><span class="s">admin</span> <span class="k">intitle:</span><span class="s">"login"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// phpMyAdmin exposto</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"phpMyAdmin"</span> <span class="k">inurl:</span><span class="s">"phpmyadmin"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Painéis de roteador expostos</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"Router Login"</span> <span class="k">inurl:</span><span class="s">"login.htm"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Joomla, Drupal, Magento</span></span>
+        <span class="code-line"><span class="k">inurl:</span><span class="s">"/administrator/index.php"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+      </div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">📹 CÂMERAS E DISPOSITIVOS IoT</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">IoT / CAMERAS</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Câmeras Axis sem senha</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"Live View / - AXIS"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Câmeras com interface web genérica</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"Network Camera"</span> <span class="k">inurl:</span><span class="s">"view.shtml"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Câmeras Hikvision</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"WebCam live stream"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// DVRs com acesso aberto</span></span>
+        <span class="code-line"><span class="k">inurl:</span><span class="s">"/view/index.shtml"</span></span>
+      </div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">🔍 SUBDOMÍNIOS E MAPEAMENTO</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">SUBDOMAIN ENUMERATION</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Descobrir subdomínios indexados</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">*.alvo.com.br</span> <span class="r">-site:www.alvo.com.br</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Ambientes de dev/staging expostos</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com</span> <span class="k">inurl:</span><span class="s">dev OR staging OR hml OR test</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Portais internos expostos</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">intranet.alvo.com</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">portal.alvo.com</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: CASOS REAIS -->
+  <div class="content" id="tab3">
+    <div class="section-title">Casos de Uso Reais</div>
+    <p class="section-lead">
+      Exemplos práticos de como pentesters e pesquisadores de segurança combinam operadores para encontrar vulnerabilidades reais. Todos os exemplos são genéricos e para fins educacionais.
+    </p>
+
+    <div class="concept">
+      <div class="concept-title">Caso 1 — Encontrar formulários com SQL Injection <span class="tag">SQLI</span></div>
+      <p>Formulários PHP em sites que ainda usam queries vulneráveis tendem a ter parâmetros expostos na URL. A dork abaixo encontra páginas PHP com IDs na URL em um domínio específico.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">SQL INJECTION CANDIDATES</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Parâmetros id= em páginas PHP (clássico SQLi)</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com.br</span> <span class="k">inurl:</span><span class="s">"?id="</span> <span class="k">filetype:</span><span class="s">php</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Outros parâmetros vulneráveis comuns</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com</span> <span class="k">inurl:</span><span class="s">"?cat=" OR "?product=" OR "?page="</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Erro de banco exposto na página</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com</span> <span class="k">intext:</span><span class="s">"mysql_fetch_array()"</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com</span> <span class="k">intext:</span><span class="s">"SQL syntax"</span></span>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-title">Caso 2 — Documentos Corporativos Confidenciais <span class="tag">DATA LEAK</span></div>
+      <p>Empresas frequentemente publicam documentos em servidores web sem perceber que o Google os indexa. PDFs com orçamentos, contratos e relatórios internos são comuns.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">DOCUMENT LEAK</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// PDFs e documentos Word confidenciais</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.gov.br</span> <span class="k">filetype:</span><span class="s">pdf</span> <span class="k">intitle:</span><span class="s">"confidencial"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Planilhas financeiras expostas</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com.br</span> <span class="k">filetype:</span><span class="s">xls</span> <span class="k">intext:</span><span class="s">"salário"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Contratos em Word</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com.br</span> <span class="k">filetype:</span><span class="s">doc</span> <span class="k">intext:</span><span class="s">"contrato de prestação"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Apresentações internas</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">alvo.com.br</span> <span class="k">filetype:</span><span class="s">pptx</span> <span class="k">intext:</span><span class="s">"uso interno"</span></span>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-title">Caso 3 — Vazamentos em Serviços de Terceiros <span class="tag">THIRD-PARTY</span></div>
+      <p>Desenvolvedores frequentemente colam código, senhas e tokens em Pastebin, Gist e repositórios públicos. Uma busca cruzada com o domínio revela essas exposições.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">THIRD-PARTY LEAKS</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Senhas e tokens em Pastebin</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">pastebin.com</span> <span class="s">"alvo.com"</span> <span class="k">intext:</span><span class="s">"password"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Credenciais em GitHub Gist</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">gist.github.com</span> <span class="s">"alvo.com"</span> <span class="s">"api_key"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Repositórios GitHub públicos com dados do alvo</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">github.com</span> <span class="s">"alvo.com.br"</span> <span class="s">"password"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Trello/Notion com info sensível</span></span>
+        <span class="code-line"><span class="k">site:</span><span class="v">trello.com</span> <span class="s">"alvo.com"</span></span>
+      </div>
+    </div>
+
+    <div class="warn">
+      <span class="warn-icon">⚠</span>
+      <span>Estes exemplos demonstram o que um invasor poderia buscar. Como defensor, use as mesmas dorks nos seus próprios domínios para identificar exposições antes que outros o façam.</span>
+    </div>
+
+    <div class="concept">
+      <div class="concept-title">Caso 4 — Identificar Tecnologias e Versões <span class="tag">FINGERPRINT</span></div>
+      <p>Páginas de erro e cabeçalhos padrão revelam versões de software. Informação valiosa para cruzar com CVEs conhecidos.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">TECHNOLOGY FINGERPRINT</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// Apache com versão exposta</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"Apache2 Ubuntu Default Page"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// IIS default page</span></span>
+        <span class="code-line"><span class="k">intitle:</span><span class="s">"IIS Windows Server"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Django debug page (NEVER in production)</span></span>
+        <span class="code-line"><span class="k">intext:</span><span class="s">"DEBUG = True"</span> <span class="k">site:</span><span class="v">alvo.com</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Laravel .env exposto</span></span>
+        <span class="code-line"><span class="k">inurl:</span><span class="s">"/.env"</span> <span class="k">intext:</span><span class="s">"APP_ENV=production"</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: SHODAN BONUS -->
+  <div class="content" id="tab4">
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+      <span class="badge badge-amber">⭐ BÔNUS</span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--text-dim)">SHODAN.IO — O GOOGLE DOS HACKERS</span>
+    </div>
+
+    <div class="section-title">Shodan — Filtros e Comandos</div>
+    <p class="section-lead">
+      Enquanto o Google indexa páginas web, o Shodan indexa dispositivos conectados à internet: servidores, câmeras, roteadores, sistemas SCADA, IoT e tudo que tem um IP. É a ferramenta definitiva de reconhecimento de infraestrutura.
+    </p>
+
+    <div class="concept">
+      <div class="concept-title">O que o Shodan encontra? <span class="tag">VISÃO GERAL</span></div>
+      <p>O Shodan faz varredura contínua de todos os IPs públicos, conecta nas portas e captura os banners de resposta. Com isso, cria um banco de dados pesquisável de serviços, versões de software, configurações e vulnerabilidades — tudo sem precisar atacar nada.</p>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">🔧 FILTROS FUNDAMENTAIS</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">hostname:</div>
+      <div class="filter-desc">Filtra resultados pelo nome de host. Ideal para mapear toda a infraestrutura de um domínio.</div>
+      <div class="filter-ex">hostname:empresa.com.br</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">ip:</div>
+      <div class="filter-desc">Busca por um IP específico. Retorna todos os serviços e portas abertas naquele endereço.</div>
+      <div class="filter-ex">ip:200.150.100.50</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">org:</div>
+      <div class="filter-desc">Filtra por organização (ASN/WHOIS). Encontra todos os servidores de uma empresa.</div>
+      <div class="filter-ex">org:"Banco do Brasil"</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">net:</div>
+      <div class="filter-desc">Filtra por faixa de IPs em notação CIDR. Útil para varrer blocos inteiros.</div>
+      <div class="filter-ex">net:200.150.0.0/16</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">country:</div>
+      <div class="filter-desc">Filtra por país usando código ISO de 2 letras.</div>
+      <div class="filter-ex">country:BR port:22</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">city:</div>
+      <div class="filter-desc">Filtra por cidade específica. Combine com outros filtros para precisão.</div>
+      <div class="filter-ex">city:"São Paulo" port:3389</div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">🔌 FILTROS DE SERVIÇO E PORTA</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">port:</div>
+      <div class="filter-desc">Filtra por porta específica. Encontra todos os servidores com aquela porta aberta.</div>
+      <div class="filter-ex">port:22 country:BR</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">product:</div>
+      <div class="filter-desc">Filtra pelo produto/software identificado no banner. Excelente para encontrar versões vulneráveis.</div>
+      <div class="filter-ex">product:"Apache httpd" country:BR</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">version:</div>
+      <div class="filter-desc">Filtra por versão específica de um produto. Use com CVEs para encontrar sistemas vulneráveis.</div>
+      <div class="filter-ex">product:"OpenSSH" version:"7.4"</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">os:</div>
+      <div class="filter-desc">Filtra pelo sistema operacional identificado. Útil para enumerar Windows Servers expostos.</div>
+      <div class="filter-ex">os:"Windows Server 2016" country:BR</div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">📡 FILTROS DE CONTEÚDO E BANNER</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">banner:</div>
+      <div class="filter-desc">Busca texto dentro do banner de resposta do serviço. Muito flexível e poderoso.</div>
+      <div class="filter-ex">banner:"220 ProFTPD" country:BR</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">http.title:</div>
+      <div class="filter-desc">Filtra pelo título HTML da página web. Similar ao intitle: do Google.</div>
+      <div class="filter-ex">http.title:"Dashboard" country:BR</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">http.html:</div>
+      <div class="filter-desc">Busca texto dentro do HTML retornado. Encontra painéis e sistemas específicos.</div>
+      <div class="filter-ex">http.html:"phpMyAdmin" country:BR</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-name">ssl.cert.subject.cn:</div>
+      <div class="filter-desc">Filtra pelo Common Name do certificado SSL/TLS. Mapeia infraestrutura via certificados.</div>
+      <div class="filter-ex">ssl.cert.subject.cn:"*.empresa.com.br"</div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">💡 QUERIES PRONTAS — SHODAN</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="code-label">SHODAN — QUERIES AVANÇADAS</div>
+      </div>
+      <div class="code-body">
+        <span class="code-line"><span class="c">// RDP exposto no Brasil (porta 3389)</span></span>
+        <span class="code-line"><span class="k">port:</span><span class="v">3389</span> <span class="k">country:</span><span class="v">BR</span> <span class="k">os:</span><span class="s">"Windows"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// MongoDB sem autenticação</span></span>
+        <span class="code-line"><span class="k">product:</span><span class="s">"MongoDB"</span> <span class="k">port:</span><span class="v">27017</span> <span class="k">country:</span><span class="v">BR</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Redis exposto (sem senha por padrão)</span></span>
+        <span class="code-line"><span class="k">port:</span><span class="v">6379</span> <span class="k">country:</span><span class="v">BR</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Câmeras Hikvision</span></span>
+        <span class="code-line"><span class="k">http.title:</span><span class="s">"Hikvision"</span> <span class="k">country:</span><span class="v">BR</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Elasticsearch sem auth</span></span>
+        <span class="code-line"><span class="k">port:</span><span class="v">9200</span> <span class="k">http.html:</span><span class="s">"cluster_name"</span> <span class="k">country:</span><span class="v">BR</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Jenkins exposto</span></span>
+        <span class="code-line"><span class="k">http.title:</span><span class="s">"Dashboard [Jenkins]"</span> <span class="k">country:</span><span class="v">BR</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Grafana sem login</span></span>
+        <span class="code-line"><span class="k">http.title:</span><span class="s">"Grafana"</span> <span class="k">country:</span><span class="v">BR</span> <span class="k">http.html:</span><span class="s">"login"</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// VNC sem senha</span></span>
+        <span class="code-line"><span class="k">port:</span><span class="v">5900</span> <span class="k">country:</span><span class="v">BR</span> <span class="k">has_screenshot:</span><span class="v">true</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Sistemas SCADA industriais (ICS)</span></span>
+        <span class="code-line"><span class="k">product:</span><span class="s">"Siemens S7"</span> <span class="k">country:</span><span class="v">BR</span></span>
+        <span class="code-line"></span>
+        <span class="code-line"><span class="c">// Servidores FTP anônimos</span></span>
+        <span class="code-line"><span class="k">port:</span><span class="v">21</span> <span class="k">banner:</span><span class="s">"Anonymous"</span> <span class="k">country:</span><span class="v">BR</span></span>
+      </div>
+    </div>
+
+    <div class="cat-header">
+      <div class="cat-line"></div>
+      <div class="cat-label">📊 COMPARATIVO — GOOGLE vs SHODAN</div>
+      <div class="cat-line"></div>
+    </div>
+
+    <table class="dork-table">
+      <tr>
+        <th>ASPECTO</th>
+        <th>GOOGLE HACKING</th>
+        <th>SHODAN.IO</th>
+      </tr>
+      <tr>
+        <td class="op">O que indexa</td>
+        <td class="desc">Páginas web, arquivos, URLs</td>
+        <td class="desc" style="color:#4488ff">Dispositivos, IPs, portas, banners</td>
+      </tr>
+      <tr>
+        <td class="op">Foco</td>
+        <td class="desc">Conteúdo web (camada 7)</td>
+        <td class="desc" style="color:#4488ff">Infraestrutura de rede (camadas 3-7)</td>
+      </tr>
+      <tr>
+        <td class="op">Melhor para</td>
+        <td class="desc">Arquivos, credenciais, painéis web</td>
+        <td class="desc" style="color:#4488ff">Câmeras, DBs expostos, serviços, IoT</td>
+      </tr>
+      <tr>
+        <td class="op">Acesso</td>
+        <td class="desc">Gratuito</td>
+        <td class="desc" style="color:#4488ff">Gratuito (limitado) / Pago</td>
+      </tr>
+      <tr>
+        <td class="op">Uso combinado</td>
+        <td class="desc" colspan="2" style="color:var(--green)">✓ Use Google para conteúdo + Shodan para infraestrutura</td>
+      </tr>
+    </table>
+
+    <div class="tip">
+      &gt;_ SHODAN CLI: instale via <span style="color:var(--green)">pip install shodan</span>, configure com <span style="color:var(--green)">shodan init SUA_API_KEY</span> e use <span style="color:var(--green)">shodan search "query"</span> para automatizar buscas.
+    </div>
+
+    <div class="warn">
+      <span class="warn-icon">⚠</span>
+      <span>O Shodan exige conta gratuita para buscas básicas e conta paga para filtros avançados e downloads. A API é amplamente usada em ferramentas de pentest como Metasploit, Recon-ng e OSINT Framework.</span>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+
+<script src="js/script.js"></script>
+</html>
